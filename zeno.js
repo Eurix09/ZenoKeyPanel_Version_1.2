@@ -116,15 +116,28 @@ async function sendIpInfoToAdmin(ipInfo, msg) {
             if (!fs.existsSync('messageIp.json')) {
                 fs.writeFileSync('messageIp.json', '[]', 'utf8');
             }
-            const messageData = JSON.parse(fs.readFileSync('messageIp.json', 'utf8') || '[]');
-            messageData.push({
+            
+            let messageData;
+            try {
+                const fileContent = fs.readFileSync('messageIp.json', 'utf8');
+                messageData = JSON.parse(fileContent || '[]');
+                if (!Array.isArray(messageData)) {
+                    messageData = [];
+                }
+            } catch (error) {
+                messageData = [];
+            }
+
+            const newMessage = {
                 ip: ipInfo.query,
                 time: moment().format("YYYY-MM-DD HH:mm:ss"),
                 username: msg?.from?.username || 'Unknown',
                 telegram_id: msg?.from?.id?.toString() || 'Unknown',
                 first_name: msg?.from?.first_name || 'Unknown'
-            });
-            fs.writeFileSync('messageIp.json', JSON.stringify(messageData, null, 2));
+            };
+
+            messageData.push(newMessage);
+            fs.writeFileSync('messageIp.json', JSON.stringify(messageData, null, 2), 'utf8');
         }
         return Boolean(sent);
     } catch (error) {
