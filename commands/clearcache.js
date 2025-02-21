@@ -1,6 +1,5 @@
 
 const fs = require('fs');
-const { exec } = require('child_process');
 
 const clearCacheCommand = (bot, ADMIN_CHAT_ID) => {
     bot.onText(/\/clearcache (.+)/, async (msg, match) => {
@@ -8,20 +7,17 @@ const clearCacheCommand = (bot, ADMIN_CHAT_ID) => {
             const option = match[1].toLowerCase();
             try {
                 if (option === 'userip') {
-                    fs.writeFileSync('UserIp.json', '[]', 'utf8');
-                    await bot.sendMessage(msg.chat.id, '✅ UserIp.json cache cleared successfully! Restarting...');
-                    exec('kill 1');
+                    fs.unlinkSync('UserIp.json');
+                    await bot.sendMessage(msg.chat.id, '✅ UserIp.json deleted successfully!');
                 } 
                 else if (option === 'messageip') {
-                    fs.writeFileSync('messageIp.json', '[]', 'utf8');
-                    await bot.sendMessage(msg.chat.id, '✅ messageIp.json cache cleared successfully! Restarting...');
-                    exec('kill 1');
+                    fs.unlinkSync('messageIp.json');
+                    await bot.sendMessage(msg.chat.id, '✅ messageIp.json deleted successfully!');
                 }
                 else if (option === 'all') {
-                    fs.writeFileSync('UserIp.json', '[]', 'utf8');
-                    fs.writeFileSync('messageIp.json', '[]', 'utf8');
-                    await bot.sendMessage(msg.chat.id, '✅ All cache files cleared successfully! Restarting...');
-                    exec('kill 1');
+                    fs.unlinkSync('UserIp.json');
+                    fs.unlinkSync('messageIp.json');
+                    await bot.sendMessage(msg.chat.id, '✅ All files deleted successfully!');
                 }
                 else {
                     await bot.sendMessage(msg.chat.id, '❌ Invalid option. Use: userip, messageip, or all');
