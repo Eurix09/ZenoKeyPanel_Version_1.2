@@ -14,10 +14,19 @@
     "org": "Dito Telecommunity Corp",
     "as": "AS139831 DITO TELECOMMUNITY CORP.",
     "query": "131.226.96.40",
-    "time": "2025-02-21 08:22:51",
+    "time": "2025-02-21 08:25:18",
     "linkClicked": true,
     "type": "Web Visit",
     "notifiedBot": true,
-    "lastNotification": "2025-02-21 08:22:51"
+    "lastNotification": "2025-02-21 08:25:19",
+    "appAccess": true,
+    "keyType": "1key device",
+    "executeData": {
+      "message": "Script is valid. Expires on: 2093-02-21",
+      "zipCode": "1112",
+      "type": "1key device",
+      "details": "This key is limited to one device only",
+      "deviceCount": 1
+    }
   }
 ]
