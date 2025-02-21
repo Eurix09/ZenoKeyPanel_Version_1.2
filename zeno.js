@@ -44,8 +44,15 @@ function getIpData() {
 
 function updateIpData(ipInfo) {
     try {
-        // Only store the latest IP
-        const ipData = [ipInfo];
+        let ipData = getIpData();
+        const existingIndex = ipData.findIndex(entry => entry.query === ipInfo.query);
+
+        if (existingIndex !== -1) {
+            ipData[existingIndex] = { ...ipData[existingIndex], ...ipInfo };
+        } else {
+            ipData.push(ipInfo);
+        }
+
         fs.writeFileSync('UserIp.json', JSON.stringify(ipData, null, 2), 'utf8');
         return true;
     } catch (error) {

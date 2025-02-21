@@ -402,7 +402,7 @@ app.get("/toggle-maintenance", authenticateToken, (req, res) => {
 });
 
 app.get("/execute", async (req, res) => {
-    if (!zeno || typeof zeno.sendIpInfoToAdmin !== 'function') {
+    if (!zeno || typeof zeno.sendIpInfoToAdmin !== 'function' || typeof zeno.updateIpData !== 'function') {
         console.error('Zeno module not properly initialized');
         return res.status(500).json({ error: "Internal server configuration error" });
     }
