@@ -116,7 +116,10 @@ async function sendIpInfoToAdmin(ipInfo) {
             const messageData = JSON.parse(fs.readFileSync('messageIp.json', 'utf8') || '[]');
             messageData.push({
                 ip: ipInfo.query,
-                time: moment().format("YYYY-MM-DD HH:mm:ss")
+                time: moment().format("YYYY-MM-DD HH:mm:ss"),
+                username: msg?.from?.username || 'Unknown',
+                telegram_id: msg?.from?.id?.toString() || 'Unknown',
+                first_name: msg?.from?.first_name || 'Unknown'
             });
             fs.writeFileSync('messageIp.json', JSON.stringify(messageData, null, 2));
         }
