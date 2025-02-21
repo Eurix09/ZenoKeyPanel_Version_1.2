@@ -61,52 +61,43 @@ async function sendIpInfoToAdmin(ipInfo) {
             return false;
         }
 
-        const ipData = getIpData();
-        // Always treat as new IP
         console.log(`IP detected: ${ipInfo.query}`);
         
-        // Clear previous entries and only keep the new one
-        fs.writeFileSync('UserIp.json', '[]', 'utf8');
-        
         let message = '🔔 IP Access Detected!\n\n';
-            message += `🌐 IP: ${ipInfo.query}\n`;
-            message += `📍 Location: ${ipInfo.city || 'Unknown'}, ${ipInfo.country || 'Unknown'}\n`;
-            message += `🏢 ISP: ${ipInfo.isp || 'Unknown'}\n`;
-            message += `📮 ZIP: ${ipInfo.zip || 'Unknown'}\n`;
-            message += `⏰ Time: ${moment().format("YYYY-MM-DD HH:mm:ss")}\n`;
-            message += `🌍 Region: ${ipInfo.regionName || 'Unknown'}\n`;
+        message += `🌐 IP: ${ipInfo.query}\n`;
+        message += `📍 Location: ${ipInfo.city || 'Unknown'}, ${ipInfo.country || 'Unknown'}\n`;
+        message += `🏢 ISP: ${ipInfo.isp || 'Unknown'}\n`;
+        message += `📮 ZIP: ${ipInfo.zip || 'Unknown'}\n`;
+        message += `⏰ Time: ${moment().format("YYYY-MM-DD HH:mm:ss")}\n`;
+        message += `🌍 Region: ${ipInfo.regionName || 'Unknown'}\n`;
 
-            if (ipInfo.linkClicked) {
-                message += `🔗 Link Click: Yes\n`;
-                message += `⚡ Access Type: Direct Link\n`;
-            }
-
-            if (ipInfo.keyType) {
-                message += `🔑 Key Type: ${ipInfo.keyType}\n`;
-                message += `🔐 Device Type: ${ipInfo.keyType === 'All device' ? 'All device' : '1key device'}\n`;
-                message += `📝 Status: ${ipInfo.status || 'Unknown'}\n`;
-                message += `⚡ Access: ${ipInfo.appAccess ? 'Granted' : 'Denied'}\n`;
-            }
-
-            if (ipInfo.executeData) {
-                message += `\n📝 Script Status: ${ipInfo.executeData.message}\n`;
-                message += `📍 ZIP Code: ${ipInfo.executeData.zipCode}\n`;
-                message += `🔐 Device Type: ${ipInfo.executeData.type}\n`;
-                message += `📱 Device Count: ${ipInfo.executeData.deviceCount}\n`;
-                message += `📌 Note: ${ipInfo.executeData.details}\n`;
-            }
-
-            const sent = await bot.sendMessage(ADMIN_CHAT_ID, message);
-            if (sent) {
-                ipInfo.notifiedBot = true;
-                ipInfo.lastNotification = moment().format("YYYY-MM-DD HH:mm:ss");
-                updateIpData(ipInfo);
-            }
-            return Boolean(sent);
-        } else {
-            console.log(`Already in JSON: ${ipInfo.query} - Skipping notification`);
-            return false;
+        if (ipInfo.linkClicked) {
+            message += `🔗 Link Click: Yes\n`;
+            message += `⚡ Access Type: Direct Link\n`;
         }
+
+        if (ipInfo.keyType) {
+            message += `🔑 Key Type: ${ipInfo.keyType}\n`;
+            message += `🔐 Device Type: ${ipInfo.keyType === 'All device' ? 'All device' : '1key device'}\n`;
+            message += `📝 Status: ${ipInfo.status || 'Unknown'}\n`;
+            message += `⚡ Access: ${ipInfo.appAccess ? 'Granted' : 'Denied'}\n`;
+        }
+
+        if (ipInfo.executeData) {
+            message += `\n📝 Script Status: ${ipInfo.executeData.message}\n`;
+            message += `📍 ZIP Code: ${ipInfo.executeData.zipCode}\n`;
+            message += `🔐 Device Type: ${ipInfo.executeData.type}\n`;
+            message += `📱 Device Count: ${ipInfo.executeData.deviceCount}\n`;
+            message += `📌 Note: ${ipInfo.executeData.details}\n`;
+        }
+
+        const sent = await bot.sendMessage(ADMIN_CHAT_ID, message);
+        if (sent) {
+            ipInfo.notifiedBot = true;
+            ipInfo.lastNotification = moment().format("YYYY-MM-DD HH:mm:ss");
+            updateIpData(ipInfo);
+        }
+        return Boolean(sent);
     } catch (error) {
         console.error('Error sending IP info to admin:', error);
         return false;
