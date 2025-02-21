@@ -1,0 +1,12 @@
+{
+  "Eurix_pogi": {
+    "expirationDate": "2093-02-21",
+    "zipCode": "1112",
+    "devices": [
+      "131.226.96.40"
+    ],
+    "maintenance": false,
+    "deviceLimit": "1key",
+    "keyType": "1key device"
+  }
+}
