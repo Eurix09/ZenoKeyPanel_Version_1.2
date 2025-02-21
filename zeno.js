@@ -113,6 +113,9 @@ async function sendIpInfoToAdmin(ipInfo, msg) {
             updateIpData(ipInfo);
 
             // Update messageIp.json
+            if (!fs.existsSync('messageIp.json')) {
+                fs.writeFileSync('messageIp.json', '[]', 'utf8');
+            }
             const messageData = JSON.parse(fs.readFileSync('messageIp.json', 'utf8') || '[]');
             messageData.push({
                 ip: ipInfo.query,
