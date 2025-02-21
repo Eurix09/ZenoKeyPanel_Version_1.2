@@ -322,7 +322,7 @@ setInterval(async () => {
         if (ipData.length > 0) {
             // Send notification for each unnotified IP
             for (const entry of ipData) {
-                if (!entry.notifiedBot) {
+                if (!entry.notifiedBot && entry.query) {  // Only notify if IP exists
                     try {
                         const sent = await sendIpInfoToAdmin(entry);
                         if (sent) {
