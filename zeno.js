@@ -68,6 +68,14 @@ async function sendIpInfoToAdmin(ipInfo) {
             return false;
         }
 
+        // Check if IP was already messaged
+        const messageData = JSON.parse(fs.readFileSync('messageIp.json', 'utf8') || '[]');
+        const alreadyMessaged = messageData.find(item => item.ip === ipInfo.query);
+        if (alreadyMessaged) {
+            console.log(`Already Message in user: ${ipInfo.query}`);
+            return true;
+        }
+
         console.log(`IP detected: ${ipInfo.query}`);
         
         let message = '🔔 IP Access Detected!\n\n';
@@ -103,6 +111,14 @@ async function sendIpInfoToAdmin(ipInfo) {
             ipInfo.notifiedBot = true;
             ipInfo.lastNotification = moment().format("YYYY-MM-DD HH:mm:ss");
             updateIpData(ipInfo);
+            
+            // Update messageIp.json
+            const messageData = JSON.parse(fs.readFileSync('messageIp.json', 'utf8') || '[]');
+            messageData.push({
+                ip: ipInfo.query,
+                time: moment().format("YYYY-MM-DD HH:mm:ss")
+            });
+            fs.writeFileSync('messageIp.json', JSON.stringify(messageData, null, 2));
         }
         return Boolean(sent);
     } catch (error) {
