@@ -44,15 +44,8 @@ function getIpData() {
 
 function updateIpData(ipInfo) {
     try {
-        let ipData = getIpData();
-        const existingIndex = ipData.findIndex(entry => entry.query === ipInfo.query);
-
-        if (existingIndex !== -1) {
-            ipData[existingIndex] = { ...ipData[existingIndex], ...ipInfo };
-        } else {
-            ipData.push(ipInfo);
-        }
-
+        // Only store the latest IP
+        const ipData = [ipInfo];
         fs.writeFileSync('UserIp.json', JSON.stringify(ipData, null, 2), 'utf8');
         return true;
     } catch (error) {
@@ -69,10 +62,13 @@ async function sendIpInfoToAdmin(ipInfo) {
         }
 
         const ipData = getIpData();
-        if (!ipData.some(entry => entry.query === ipInfo.query)) {
-            console.log(`New IP detected: ${ipInfo.query}`);
-
-            let message = '🔔 IP Access Detected!\n\n';
+        // Always treat as new IP
+        console.log(`IP detected: ${ipInfo.query}`);
+        
+        // Clear previous entries and only keep the new one
+        fs.writeFileSync('UserIp.json', '[]', 'utf8');
+        
+        let message = '🔔 IP Access Detected!\n\n';
             message += `🌐 IP: ${ipInfo.query}\n`;
             message += `📍 Location: ${ipInfo.city || 'Unknown'}, ${ipInfo.country || 'Unknown'}\n`;
             message += `🏢 ISP: ${ipInfo.isp || 'Unknown'}\n`;
