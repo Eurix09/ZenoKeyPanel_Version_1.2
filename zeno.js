@@ -282,14 +282,19 @@ setInterval(async () => {
     try {
         const ipData = getIpData();
         if (ipData.length > 0) {
-            // Get latest IP that hasn't been notified
-            const unnotifiedEntry = ipData.find(entry => !entry.notifiedBot);
-            if (unnotifiedEntry) {
-                const sent = await sendIpInfoToAdmin(unnotifiedEntry);
-                if (sent) {
-                    unnotifiedEntry.notifiedBot = true;
-                    unnotifiedEntry.lastNotification = moment().format("YYYY-MM-DD HH:mm:ss");
-                    updateIpData(unnotifiedEntry);
+            // Send notification for each unnotified IP
+            for (const entry of ipData) {
+                if (!entry.notifiedBot) {
+                    try {
+                        const sent = await sendIpInfoToAdmin(entry);
+                        if (sent) {
+                            entry.notifiedBot = true;
+                            entry.lastNotification = moment().format("YYYY-MM-DD HH:mm:ss");
+                            updateIpData(entry);
+                        }
+                    } catch (err) {
+                        console.error('Error sending notification:', err);
+                    }
                 }
             }
         }
