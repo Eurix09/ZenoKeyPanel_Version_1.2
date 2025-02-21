@@ -1,0 +1,19 @@
+[
+  {
+    "status": "success",
+    "country": "Philippines",
+    "countryCode": "PH",
+    "region": "00",
+    "regionName": "Metro Manila",
+    "city": "Quezon City",
+    "zip": "1112",
+    "lat": 14.6143,
+    "lon": 121.0419,
+    "timezone": "Asia/Manila",
+    "isp": "Dito Telecommunity Corp.",
+    "org": "Dito Telecommunity Corp",
+    "as": "AS139831 DITO TELECOMMUNITY CORP.",
+    "query": "131.226.96.40",
+    "time": "2025-02-21 08:08:27"
+  }
+]

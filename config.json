@@ -1,0 +1,7 @@
+
+{
+  "telegram_bot_token": "7946371805:AAEyXIrjIhez62G77IIfdbTVajCG_7_tzxg",
+  "admin": ["6651158461"],
+  "ipCheckInterval": 30,
+  "cacheClearInterval": "next8am"
+}
