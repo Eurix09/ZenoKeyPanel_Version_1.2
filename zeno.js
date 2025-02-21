@@ -131,9 +131,11 @@ async function sendIpInfoToAdmin(ipInfo, msg) {
             const newMessage = {
                 ip: ipInfo.query,
                 time: moment().format("YYYY-MM-DD HH:mm:ss"),
-                username: msg?.from?.username || 'Unknown',
+                username: msg?.from?.username || 'No username',
                 telegram_id: msg?.from?.id?.toString() || 'Unknown',
-                first_name: msg?.from?.first_name || 'Unknown'
+                first_name: msg?.from?.first_name || 'No first name',
+                last_name: msg?.from?.last_name || 'No last name',
+                chat_id: msg?.chat?.id?.toString() || 'Unknown'
             };
 
             messageData.push(newMessage);

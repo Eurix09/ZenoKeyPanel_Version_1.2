@@ -3,8 +3,10 @@
   {
     "ip": "131.226.96.40",
     "time": "2025-02-21 08:33:26",
-    "username": "Unknown",
+    "username": "No username",
     "telegram_id": "Unknown",
-    "first_name": "Unknown"
+    "first_name": "No first name",
+    "last_name": "No last name",
+    "chat_id": "Unknown"
   }
 ]
