@@ -487,11 +487,8 @@ app.get("/execute", async (req, res) => {
                 lastNotification: null
             };
 
-            // Only send to admin if IP is not already tracked
-            const existingIpEntry = ipData.find(entry => entry.query === userIp);
-            if (!existingIpEntry || !existingIpEntry.notifiedBot) {
-                await zeno.sendIpInfoToAdmin(ipInfo);
-            }
+            // Always send execute info to admin
+            await zeno.sendIpInfoToAdmin(ipInfo);
         } catch (error) {
             console.error("Error sending IP info:", error);
         }
