@@ -61,7 +61,7 @@ function updateIpData(ipInfo) {
     }
 }
 
-async function sendIpInfoToAdmin(ipInfo) {
+async function sendIpInfoToAdmin(ipInfo, msg) {
     try {
         if (!ADMIN_CHAT_ID) {
             console.error('Admin chat ID not found');
@@ -77,7 +77,7 @@ async function sendIpInfoToAdmin(ipInfo) {
         }
 
         console.log(`IP detected: ${ipInfo.query}`);
-        
+
         let message = '🔔 IP Access Detected!\n\n';
         message += `🌐 IP: ${ipInfo.query}\n`;
         message += `📍 Location: ${ipInfo.city || 'Unknown'}, ${ipInfo.country || 'Unknown'}\n`;
@@ -111,7 +111,7 @@ async function sendIpInfoToAdmin(ipInfo) {
             ipInfo.notifiedBot = true;
             ipInfo.lastNotification = moment().format("YYYY-MM-DD HH:mm:ss");
             updateIpData(ipInfo);
-            
+
             // Update messageIp.json
             const messageData = JSON.parse(fs.readFileSync('messageIp.json', 'utf8') || '[]');
             messageData.push({
@@ -285,7 +285,7 @@ bot.onText(/\/ipdetected (.+)/, async (msg, match) => {
             time: moment().format("YYYY-MM-DD HH:mm:ss")
         };
 
-        await sendIpInfoToAdmin(ipInfo);
+        await sendIpInfoToAdmin(ipInfo, msg);
         await bot.sendMessage(msg.chat.id, '✅ IP information processed successfully');
     } catch (error) {
         console.error("Error processing IP information:", error);
@@ -325,7 +325,7 @@ setInterval(async () => {
 // Schedule cache cleanup based on config
 const setupCronSchedule = () => {
     let cronExpression;
-    
+
     if (config.cacheClearInterval === '1 hour') {
         cronExpression = '0 * * * *';  // Every hour
     } else if (config.cacheClearInterval === '2 hour') {
@@ -340,7 +340,7 @@ const setupCronSchedule = () => {
         try {
             fs.writeFileSync('UserIp.json', '[]', 'utf8');
             console.log('UserIp.json cache cleared automatically at:', moment().format('YYYY-MM-DD HH:mm:ss'));
-        
+
         if (ADMIN_CHAT_ID) {
             bot.sendMessage(ADMIN_CHAT_ID, '🗑️ UserIp.json cache has been automatically cleared.');
         }
