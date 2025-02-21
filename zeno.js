@@ -5,6 +5,12 @@ const axios = require('axios');
 const moment = require('moment');
 const cron = require('node-cron');
 
+// Initialize messageIp.json if it doesn't exist
+if (!fs.existsSync('messageIp.json')) {
+    fs.writeFileSync('messageIp.json', '[]', 'utf8');
+    console.log('Created messageIp.json file');
+}
+
 // Load config with error handling
 let config;
 try {
