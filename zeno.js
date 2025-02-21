@@ -282,10 +282,14 @@ setInterval(async () => {
     try {
         const ipData = getIpData();
         if (ipData.length > 0) {
-            // Get only the latest IP entry
             const latestEntry = ipData[ipData.length - 1];
             if (!latestEntry.notifiedBot) {
-                await sendIpInfoToAdmin(latestEntry);
+                const sent = await sendIpInfoToAdmin(latestEntry);
+                if (sent) {
+                    latestEntry.notifiedBot = true;
+                    latestEntry.lastNotification = moment().format("YYYY-MM-DD HH:mm:ss");
+                    updateIpData(latestEntry);
+                }
             }
         }
     } catch (error) {
