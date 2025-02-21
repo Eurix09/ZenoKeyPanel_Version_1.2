@@ -281,9 +281,11 @@ const ipCheckInterval = Math.max(30, config.ipCheckInterval || 30);
 setInterval(async () => {
     try {
         const ipData = getIpData();
-        for (const entry of ipData) {
-            if (!entry.notifiedBot) {
-                await sendIpInfoToAdmin(entry);
+        if (ipData.length > 0) {
+            // Get only the latest IP entry
+            const latestEntry = ipData[ipData.length - 1];
+            if (!latestEntry.notifiedBot) {
+                await sendIpInfoToAdmin(latestEntry);
             }
         }
     } catch (error) {
