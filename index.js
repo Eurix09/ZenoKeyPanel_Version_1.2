@@ -483,7 +483,8 @@ app.get("/execute", async (req, res) => {
                         'This key is limited to one device only',
                     deviceCount: keysCache[apiKey]?.devices?.length || 0
                 },
-                notifiedBot: false
+                notifiedBot: false,
+                lastNotification: null
             };
 
             // Only send to admin if IP is not already tracked
